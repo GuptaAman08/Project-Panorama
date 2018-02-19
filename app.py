@@ -17,6 +17,9 @@ def project():
 def landing():
     return render_template('home.html')
 
+@app.route('/profile', methods=["POST","GET"])
+def profile():
+    return render_template('profile.html')
 
 
 if __name__ == '__main__':
