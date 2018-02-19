@@ -10,8 +10,14 @@ def success():
     return render_template('index.html')
 
 @app.route('/projects')
-def success():
+def project():
     return render_template('projects.html')
 
+@app.route('/home', methods=["POST","GET"])
+def landing():
+    return render_template('home.html')
+
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(host='127.0.0.1', port=8000, debug=True)
