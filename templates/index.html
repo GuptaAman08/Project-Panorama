@@ -20,6 +20,11 @@
 
 
     {% include 'includes/nav_bar.html' %}
+    <div id="content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
     <div class="container">
         {% block body %}
 
