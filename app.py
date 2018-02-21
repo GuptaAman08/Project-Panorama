@@ -21,6 +21,10 @@ def landing():
 def profile():
     return render_template('profile.html')
 
+@app.route('/projects_search', methods=["POST","GET"])
+def projects_search():
+    return render_template('projects_search.html')    
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)
