@@ -1,13 +1,10 @@
-
 from flask import Flask,render_template, request
-
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def success():
-    return render_template('index.html')
+    return render_template('home.html')
 
 @app.route('/projects')
 def project():
