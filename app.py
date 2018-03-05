@@ -1,4 +1,5 @@
 from flask import Flask,render_template, request
+import mongo
 
 app = Flask(__name__)
 
@@ -17,6 +18,18 @@ def landing():
 @app.route('/profile', methods=["POST","GET"])
 def profile():
     return render_template('profile.html')
+
+@app.route('/faculty', methods=["POST","GET"])
+def faculty():
+    # result = mongo.facultyCollection.insert_one({
+    #     "faculty_id":"2",
+    #     "faculty_name":"Amit Singh",
+    #     "faculty_email":"amit.singh@ves.ac.in"
+    # })
+    result = mongo.facultyCollection.find()
+    for obj in result:
+        print(obj)
+    return "New"
 
 @app.route('/projects_search', methods=["POST","GET"])
 def projects_search():
