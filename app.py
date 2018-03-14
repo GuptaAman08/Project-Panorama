@@ -29,6 +29,7 @@ def faculty():
     result = mongo.facultyCollection.find()
     for obj in result:
         print(obj)
+    return render_template('faculty.html')
     return "New"
 
 @app.route('/projects_search', methods=["POST","GET"])
