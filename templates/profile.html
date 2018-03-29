@@ -1,156 +1,164 @@
-{% extends 'index.html' %}
-{% block head %}
+{% extends 'index.html' %} {% block head %}
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
 <style>
-
-    .profile_img{
-        border-radius: 50%; 
-        border: 2px solid red; 
-        width: 100%;
-        display: flex;
-        margin: auto;
-        text-align: center;
-        justify-content: center;
-        /* flex-direction: column; */
-        align-items: center;
-        
-    }
-    .content{
-        background-color: rgb(201, 207, 207);
-        font-weight: 500;
-    }
-    .customCss:link{
-        background-color: rgb(227, 236, 236);
-    }
     .card {
-    margin-top: 20px;
-    padding: 30px;
-    background-color: rgba(214, 224, 226, 0.2);
-    -webkit-border-top-left-radius:5px;
-    -moz-border-top-left-radius:5px;
-    border-top-left-radius:5px;
-    -webkit-border-top-right-radius:5px;
-    -moz-border-top-right-radius:5px;
-    border-top-right-radius:5px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-.card.hovercard {
-    position: relative;
-    padding-top: 0;
-    overflow: hidden;
-    text-align: center;
-    background-color: #fff;
-    background-color: rgba(255, 255, 255, 1);
-}
-.card.hovercard .card-background {
-    height: 130px;
-}
-.card-background img {
-    -webkit-filter: blur(25px);
-    -moz-filter: blur(25px);
-    -o-filter: blur(25px);
-    -ms-filter: blur(25px);
-    filter: blur(25px);
-    margin-left: -100px;
-    margin-top: -200px;
-    min-width: 130%;
-}
-.card.hovercard .useravatar {
-    position: absolute;
-    top: 15px;
-    left: 0;
-    right: 0;
-}
-.card.hovercard .useravatar img {
+        margin-top: 20px;
+        padding: 30px;
+        background-color: rgba(214, 224, 226, 0.2);
+        -webkit-border-top-left-radius: 5px;
+        -moz-border-top-left-radius: 5px;
+        border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-top-right-radius: 5px;
+        border-top-right-radius: 5px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .card.hovercard {
+        position: relative;
+        padding-top: 0;
+        overflow: hidden;
+        text-align: center;
+        background-color: #fff;
+        background-color: rgba(255, 255, 255, 1);
+    }
+
+    .card.hovercard .card-background {
+        height: 130px;
+    }
+
+    .card-background img {
+        -webkit-filter: blur(25px);
+        -moz-filter: blur(25px);
+        -o-filter: blur(25px);
+        -ms-filter: blur(25px);
+        filter: blur(25px);
+        margin-left: -100px;
+        margin-top: -200px;
+        min-width: 130%;
+    }
+
+    .card.hovercard .useravatar {
+        position: absolute;
+        top: 15px;
+        left: 0;
+        right: 0;
+    }
+
+    .card.hovercard .useravatar img {
+        width: 100px;
+        height: 100px;
+        max-width: 100px;
+        max-height: 100px;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        border: 5px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .card.hovercard .card-info {
+        position: absolute;
+        bottom: 14px;
+        left: 0;
+        right: 0;
+    }
+
+    .card.hovercard .card-info .card-title {
+        padding: 0 5px;
+        font-size: 20px;
+        line-height: 1;
+        color: #262626;
+        background-color: rgba(255, 255, 255, 0.1);
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+    }
+
+    .card.hovercard .card-info {
+        overflow: hidden;
+        font-size: 12px;
+        line-height: 20px;
+        color: #737373;
+        text-overflow: ellipsis;
+    }
+
+    .card.hovercard .bottom {
+        padding: 0 20px;
+        margin-bottom: 17px;
+    }
+    p{
+        text-align: center;
+    }
     
-    width: 100px;
-    height: 100px;
-    max-width: 100px;
-    max-height: 100px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-    border: 5px solid rgba(255, 255, 255, 0.5);
-}
-.card.hovercard .card-info {
-    position: absolute;
-    bottom: 14px;
-    left: 0;
-    right: 0;
-}
-.card.hovercard .card-info .card-title {
-    padding:0 5px;
-    font-size: 20px;
-    line-height: 1;
-    color: #262626;
-    background-color: rgba(255, 255, 255, 0.1);
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-}
-.card.hovercard .card-info {
-    overflow: hidden;
-    font-size: 12px;
-    line-height: 20px;
-    color: #737373;
-    text-overflow: ellipsis;
+    @media only screen and (max-width:400px) {
+  /* For mobile phones: */
+    .indent-nav {
+        display: block;
+        width: 100%;
+    }
+
+
 }
 </style>
-{% endblock %}
-
-{% block content %}
-    <div class="container">
-        <div class="card hovercard">
-            <div class="card-background">
-                <img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/">
-                <!-- http://lorempixel.com/850/280/people/9/ -->
-            </div>
-            <div class="useravatar">
-                <img alt="" src="http://lorempixel.com/100/100/people/9/">
-            </div>
-            <div class="card-info"> <span class="card-title">Pamela Anderson</span>
-    
-            </div>
+{% endblock %} {% block content %}
+<div class="container">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="gg" src="../static/img/chanakya.jpg">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
         </div>
-        <div>
-            
-            <!-- Nav pills -->
-            <ul class="nav nav-pills nav-justified" role="tablist">
-                <li class="nav-item">
+        <div class="useravatar">
+            <img alt="gg" src="../static/img/chanakya.jpg">
+        </div>
+        <div class="card-info">
+            <span class="card-title">Pamela Anderson</span>
+
+        </div>
+    </div>
+    <div>
+
+        <!-- Nav pills -->
+        <ul class="nav nav-pills nav-justified indent-nav" role="tablist">
+            <li class="nav-item">
                 <a class="nav-link active customCss" data-toggle="pill" href="#home">Projects</a>
-                </li>
-                <li class="nav-item">
+            </li>
+            <li class="nav-item">
                 <a class="nav-link customCss" data-toggle="pill" href="#menu1">Personal_Info</a>
-                </li>
-                <li class="nav-item">
+            </li>
+            <li class="nav-item">
                 <a class="nav-link customCss" data-toggle="pill" href="#menu2">Other</a>
-                </li>
-            </ul>
-            
-            <!-- Tab panes -->
-            <div class="tab-content content">
-                <div id="home" class="container tab-pane active"><br>
-                <h3 style="text-align:center">Projects</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                </div>
-                <div id="menu1" class="container tab-pane fade"><br>
-                <h3 style="text-align:center">Personal_Info</h3>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content content" style="background-color:#fff;color:black;">
+            <div id="home" class="container tab-pane active">
+                <br>
+                <h3 style="text-align:center;">Projects</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                    magna aliqua.</p>
+            </div>
+            <div id="menu1" class="container tab-pane fade">
+                <br>
+                <h3 style="text-align:center;">Personal_Info</h3>
                 <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                </div>
-                <div id="menu2" class="container tab-pane fade"><br>
-                <h3 style="text-align:center">Other</h3>
-                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-                </div>
+            </div>
+            <div id="menu2" class="container tab-pane fade">
+                <br>
+                <h3 style="text-align:center;">Other</h3>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
+                    aperiam.
+                </p>
             </div>
         </div>
     </div>
+</div>
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> {% endblock %}
