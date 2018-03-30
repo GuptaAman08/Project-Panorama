@@ -1,5 +1,6 @@
-from flask import Flask,render_template, request
+from flask import Flask,render_template, request, flash, redirect, url_for, session, logging
 import mongo
+from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 
 app = Flask(__name__)
 
@@ -31,6 +32,19 @@ def faculty():
         print(obj)
     return render_template('faculty.html')
     return "New"
+
+class LoginForm(Form):
+    contact = StringField('Contact',[validators.InputRequired(message="Input is mandatory!!!!"),validators.Regexp(regex='^[0-9]{10}$',message="Contact number invalid")])
+    division = StringField('Division',[validators.InputRequired(message="Input is mandatory!!!!"),validators.Length(min=3,max=5)])
+    year = StringField('Year_of_joining',[validators.InputRequired(message="Input is mandatory!!!!"),validators.Length(4, 4),validators.Regexp(regex="^[0-9][0-9]{3}$")])
+
+@app.route('/login',methods=['POST','GET'])
+def login():
+    form = LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+        print("Collected sucessfully")
+    return render_template('login.html',form=form)
+
 
 @app.route('/projects_search', methods=["POST","GET"])
 def projects_search():
