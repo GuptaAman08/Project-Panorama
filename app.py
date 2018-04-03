@@ -1,6 +1,7 @@
 from flask import Flask,render_template, request, flash, redirect, url_for, session, logging
 import mongo
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
+from passlib.hash import sha256_crypt 
 
 app = Flask(__name__)
 
@@ -34,17 +35,32 @@ def faculty():
     return "New"
 
 class LoginForm(Form):
+    email = StringField('Email',[validators.InputRequired(message="Input is mandatory!!!!"),validators.Regexp(regex='^[0-9]{4}[a-z]+.[a-z]+@ves.ac.in$',message="Inappropriate Email ID")])
+    password = PasswordField('Password',[validators.DataRequired(message="Input is mandatory!!!!"), validators.EqualTo('confirm', message="Passwords do not match")])
+    confirm = PasswordField('Confirm Password',[validators.InputRequired(message="Input is mandatory!!!!")])
     contact = StringField('Contact',[validators.InputRequired(message="Input is mandatory!!!!"),validators.Regexp(regex='^[0-9]{10}$',message="Contact number invalid")])
     division = StringField('Division',[validators.InputRequired(message="Input is mandatory!!!!"),validators.Length(min=3,max=5)])
     year = StringField('Year_of_joining',[validators.InputRequired(message="Input is mandatory!!!!"),validators.Length(4, 4),validators.Regexp(regex="^[0-9][0-9]{3}$")])
 
-@app.route('/login',methods=['POST','GET'])
-def login():
+@app.route('/register',methods=['POST','GET'])
+def register():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
-        print("Collected sucessfully")
+            email = form.email.data
+            password = sha256_crypt.encrypt(str(form.password.data))
+            contact = form.contact.data
+            div = form.division.data
+            year = form.year.data
+            flash('Registered successfully!!', 'success')
+            return redirect(url_for('login'))
     return render_template('login.html',form=form)
 
+@app.route('/login', methods=["POST","GET"])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password_to_verify = request.form['password']
+    return render_template('login.html')    
 
 @app.route('/projects_search', methods=["POST","GET"])
 def projects_search():
@@ -52,4 +68,5 @@ def projects_search():
 
 
 if __name__ == '__main__':
+    app.secret_key = "secret123"
     app.run(host='127.0.0.1', port=8000, debug=True)
