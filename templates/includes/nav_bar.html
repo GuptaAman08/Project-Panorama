@@ -23,12 +23,19 @@
             <button class="btn btn-warning my-2 my-sm-0" type="button">Search</button>
         </form>
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/register" style="cursor:pointer;">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"  style="cursor:pointer;">Log in</a>
-            </li>
+            {% if session.logged_in %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" style="cursor:pointer;">Log in</a>
+                </li>
+                <span style="font-size: 1.5em;color:#F89406">session.username</span>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/register" style="cursor:pointer;">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login" style="cursor:pointer;">Log in</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

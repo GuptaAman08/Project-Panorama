@@ -1,24 +1,38 @@
 {% extends 'index.html' %}
 
 {% block head %}
+<style>
+    h1 {
+        text-align: center;
+    }
+    #content {
+        margin-top: 3em !important;    
+    }
+    @media only screen and (max-width: 600px) {
+    #content {
+        width: 100%;
+        height: 100%;
+    }
+}
 
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="container jumbotron"> 
-        {% from 'includes/form_helpers.html' import render_field %}
+        
         <h1>Login Form</h1>
         <form method="POST" action="">
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" placeholder="2013xd.xd@ves.ac.in">
+                <input type="email" class="form-control" name="email" placeholder="2013xd.xd@ves.ac.in">
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" name="password" >
+                <input type="password" name="password" class="form-control">
             </div>
             <p><input type="submit" class="btn btn-primary" value="Submit"></p>
         </form>
-    </div>
+</div>
 
 {% endblock %}
