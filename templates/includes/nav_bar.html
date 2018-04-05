@@ -17,6 +17,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="/profile">UserProfile</a>
             </li>
+            {% if session.logged_in %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/upload_projects">Upload</a>
+                </li>
+            {% endif %}
+
         </ul>
         <form class="form-inline my-lg-0 mx-auto" action="/search-results" method="GET">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" name="q" id="q">
@@ -25,9 +31,12 @@
         <ul class="navbar-nav">
             {% if session.logged_in %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout" style="cursor:pointer;">Log in</a>
+                    <a class="nav-link" href="/logout" style="cursor:pointer;margin-right:5px">Logout</a>
                 </li>
-                <span style="font-size: 1.5em;color:#F89406">session.username</span>
+                <li class="nav-item">
+                    <a href="/" class="nav-link" style="color:#F89406"> {{ session.username }} </a>
+                </li>
+                
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="/register" style="cursor:pointer;">Register</a>

@@ -10,10 +10,6 @@ app = Flask(__name__)
 def success():
     return render_template('home.html')
 
-@app.route('/projects')
-def project():
-    return render_template('projects.html')
-
 @app.route('/home', methods=["POST","GET"])
 def landing():
     return render_template('home.html')
@@ -126,10 +122,18 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/projects_search', methods=["POST","GET"])
+@app.route('/search-results', methods=["POST","GET"])
 def projects_search():
     return render_template('projects_search.html')    
 
+@app.route('/upload_projects', methods=["POST", "GET"])
+@is_logged_in
+def uploadProject():   
+    return render_template('upload.html')
+
+@app.route('/projects')
+def project():  
+    return render_template('projects.html')
 
 if __name__ == '__main__':
     app.secret_key = "secret123"

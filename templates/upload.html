@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+
+{% block head %}
+<style>
+    h1 {
+        text-align: center;
+    }
+    #content {
+        margin-top: 3em !important;    
+    }
+    @media only screen and (max-width: 600px) {
+    #content {
+        width: 100%;
+        height: 100%;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+        <div class="container jumbotron"> 
+           {% from 'includes/form_helpers.html' import render_field %}
+           <h1>Registration Form</h1>
+           <form method="POST" action="">
+               <div class="form-group">
+                   {{render_field(form.email, class_="form-control")}}
+               </div>
+               <div class="form-group">
+                   {{render_field(form.projectName, class_="form-control")}}
+               </div>
+               <div class="form-group">
+                   {{render_field(form.projectDescription, class_="form-control")}}
+               </div>
+               <div class="form-group">
+                   {{render_field(form.projectLeader, class_="form-control")}}
+               </div>
+               <div class="form-group">
+                   {{render_field(form.projectMembers, class_="form-control")}}
+               </div>
+               <div class="form-group">
+                   {{render_field(form.category, class_="form-control")}}
+               </div>
+               <div class="form-group">
+                   {{render_field(form.subjectName, class_="form-control")}}
+               </div>
+               <div class="form-group">
+                   {{render_field(form.academicYear, class_="form-control")}}
+               </div>
+               <div class="form-group">
+                   {{render_field(form.semester, class_="form-control")}}
+               </div>
+               <div class="form-group">
+                   {{render_field(form.githubRepo , class_="form-control")}}
+               </div>
+               <div class="form-group">
+                   {{render_field(form.experienceOrDifficulties, class_="form-control")}}
+               </div>
+               <p><input type="submit" class="btn btn-primary" value="Submit"></p>
+           </form>
+       </div>
+    <!--  -->
+
+{% endblock %}
