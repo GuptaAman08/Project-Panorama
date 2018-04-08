@@ -1,64 +1,69 @@
-{% extends 'index.html' %}
+{% extends 'index.html' %} 
 
 {% block head %}
 <style>
     h1 {
         text-align: center;
     }
+
     #content {
-        margin-top: 3em !important;    
+        margin-top: 3em !important;
     }
+
     @media only screen and (max-width: 600px) {
-    #content {
-        width: 100%;
-        height: 100%;
+        #content {
+            width: 100%;
+            height: 100%;
+        }
     }
-}
 </style>
-{% endblock %}
+{% endblock %} 
 
 {% block content %}
-<div class="container">
-        <div class="container jumbotron"> 
-           {% from 'includes/form_helpers.html' import render_field %}
-           <h1>Registration Form</h1>
-           <form method="POST" action="">
-               <div class="form-group">
-                   {{render_field(form.email, class_="form-control")}}
-               </div>
-               <div class="form-group">
-                   {{render_field(form.projectName, class_="form-control")}}
-               </div>
-               <div class="form-group">
-                   {{render_field(form.projectDescription, class_="form-control")}}
-               </div>
-               <div class="form-group">
-                   {{render_field(form.projectLeader, class_="form-control")}}
-               </div>
-               <div class="form-group">
-                   {{render_field(form.projectMembers, class_="form-control")}}
-               </div>
-               <div class="form-group">
-                   {{render_field(form.category, class_="form-control")}}
-               </div>
-               <div class="form-group">
-                   {{render_field(form.subjectName, class_="form-control")}}
-               </div>
-               <div class="form-group">
-                   {{render_field(form.academicYear, class_="form-control")}}
-               </div>
-               <div class="form-group">
-                   {{render_field(form.semester, class_="form-control")}}
-               </div>
-               <div class="form-group">
-                   {{render_field(form.githubRepo , class_="form-control")}}
-               </div>
-               <div class="form-group">
-                   {{render_field(form.experienceOrDifficulties, class_="form-control")}}
-               </div>
-               <p><input type="submit" class="btn btn-primary" value="Submit"></p>
-           </form>
-       </div>
-    <!--  -->
+<div class="container jumbotron">
+    {% from 'includes/form_helpers.html' import render_field %}
+    <h1>Upload Projects</h1>
+    <form method="POST" action="">
+        <div class="form-group">
+            {{ render_field(form.proj_leader, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.proj_member, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.proj_name, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.project_description, class_="form-control", id="editor") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.category, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.status, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.semester, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.subject, class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.academicYear, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.github, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.endurance, class_="form-control", id="exp") }}
+        </div>
+        
+        <p>
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </p>
+    </form>
+</div>
+
+<!--  -->
 
 {% endblock %}
