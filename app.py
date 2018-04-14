@@ -9,11 +9,15 @@ app = Flask(__name__)
 
 @app.route('/')
 def success():
-    return render_template('home.html')
+    projects = list(mongo.projectCollection.find())
+    numResults = min(len(projects),4)
+    return render_template('home.html',projects=projects, numResults=numResults)
 
 @app.route('/home', methods=["POST","GET"])
 def landing():
-    return render_template('home.html')
+    projects = list(mongo.projectCollection.find())
+    numResults = min(len(projects),4)
+    return render_template('home.html',projects=projects, numResults=numResults)
 
 
 
@@ -128,7 +132,9 @@ def logout():
 
 @app.route('/search-results', methods=['POST','GET'])
 def projects_search():
-    return render_template('projects_search.html')    
+    projects = list(mongo.projectCollection.find())
+    numResults = min(len(projects),4)
+    return render_template('projects_search.html',projects=projects, numResults=numResults)
 
 class UploadProject(Form):
     proj_leader = StringField('Project Leader registered email ID', [validators.InputRequired(message="Input Mandatory"), validators.Regexp(regex='^[0-9]{4}[a-z]+.[a-z]+@ves.ac.in$',message="Inappropriate Email ID")])
