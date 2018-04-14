@@ -1,21 +1,5 @@
 {% extends 'index.html' %}
 {% block head %}
-<style>   
-
-.card {
-    transition: box-shadow .3s;
-    border-radius:3%;
-    background:#ffe6ff;
-  
-}
-.card:hover {
-    border: 1px solid #000;
-    background-color: #fff;
-    box-shadow: 0em 0em 2em rgba(33, 33, 33, 0.40);
-    cursor: pointer; 
-}
-
-</style>
 
 {% endblock %}
 
@@ -25,95 +9,18 @@
             <h2 id="one_space">The Search Result Page</h2>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-md-4 col-lg-3" >
-                <div class="card  mb-3">                            
-                    <div class="card-body">
-                        <h4 class="card-title">Project Title</h4>
-                        <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                        <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                        <a href="#" class="btn btn-primary">See Project</a>
+            {% for project in projects %}
+                    <div class="col-sm-6 col-md-6 col-lg-4" >
+                        <div class="card mb-3 ">                            
+                            <div class="card-body ">
+                                <h4 class="card-title">{{project['project_name'] | truncate(15,killwords=True,leeway=0) }}</h4>
+                                <p class="card-text"><h5>Catagory</h5>{{project['project_category'] | truncate(10)  }}</p>
+                                <p class="card-text"><h5>Tech Stack</h5>{{project['project_techstack'] | truncate(20) }}</p>
+                                <a href="#" class="btn btn-warning">See Project</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-    
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card  mb-3">                            
-                    <div class="card-body">
-                        <h4 class="card-title">Project Title</h4>
-                        <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                        <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                        <a href="#" class="btn btn-primary">See Project</a>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card  mb-3">                            
-                    <div class="card-body">
-                        <h4 class="card-title">Project Title</h4>
-                        <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                        <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                        <a href="#" class="btn btn-primary">See Project</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card  mb-3">                            
-                    <div class="card-body">
-                        <h4 class="card-title">Project Title</h4>
-                        <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                        <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                        <a href="#" class="btn btn-primary">See Project</a>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card  mb-3">                            
-                    <div class="card-body">
-                        <h4 class="card-title">Project Title</h4>
-                        <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                        <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                        <a href="#" class="btn btn-primary">See Project</a>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card  mb-3">                            
-                    <div class="card-body">
-                        <h4 class="card-title">Project Title</h4>
-                        <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                        <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                        <a href="#" class="btn btn-primary">See Project</a>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card  mb-3">                            
-                    <div class="card-body">
-                        <h4 class="card-title">Project Title</h4>
-                        <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                        <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                        <a href="#" class="btn btn-primary">See Project</a>
-                    </div>
-                </div>
-            </div>  
-            
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card  mb-3">                            
-                    <div class="card-body">
-                        <h4 class="card-title">Project Title</h4>
-                        <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                        <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                        <a href="#" class="btn btn-primary">See Project</a>
-                    </div>
-                </div>
-            </div>
-    
-    
+            {% endfor %}
         </div> 
     </div>   
 

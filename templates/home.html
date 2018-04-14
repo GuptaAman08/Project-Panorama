@@ -4,31 +4,32 @@
 {% block head %}
     <title>Project Panorama</title>
     <style>
-        .card {
-            transition: box-shadow .3s;
-            border-radius:3%;
-            background:#ffe6ff;
-        
-        }
-        .card:hover {
-            border: 1px solid #000;
-            background-color: #fff;
-            box-shadow: 0em 0em 2em rgba(33, 33, 33, 0.40);
-            cursor: pointer; 
-        }
-        .image{
+        .image1{
             background-image: url("../static/img/bg.png");
             background-repeat: no-repeat;
             background-size: cover;
         }
+        .image2{
+            /* background-image: url("../static/img/bg2.png");
+            background-repeat: no-repeat;
+            background-size: cover; */
+        }
         @media only screen and (max-width:832px) {
             /* For mobile phones: */
-                .menu, .main, .right {
-                    width:100%;
-    }
-
-
-} 
+            .menu, .main, .right {
+                width:100%;
+            }
+            .image1{
+                background:none;
+            }
+            #card2,#card3,#card4{
+                visibility: hidden;
+            }
+        }
+        .my-flex-card > div > div.card {
+            height: calc(100% - 15px);
+            margin-bottom: 15px;
+        }
     </style>
 {% endblock %}
 
@@ -50,52 +51,25 @@
                 <li>Faculties can keep track of all the projects at one place</li>
             </ul>
         </div>
-        <div class="image col-md-6 h-100">
+        <div class="image1 col-md-6 h-100">
 
         </div>
     </div>
-    <div class="row h-100 w-100">
-        <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="card  mb-3">                            
-                <div class="card-body">
-                    <h4 class="card-title">Project Title</h4>
-                    <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                    <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                    <a href="#" class="btn btn-primary">See Project</a>
+    <div class="row h-100 w-100 p-5 image2">
+        {% for project in projects %}
+            {% if loop.index <= numResults %}
+                <div id="card{{loop.index}}" class="col-sm-6 col-md-4 col-lg-3" >
+                    <div class="card mb-3 ">                            
+                        <div class="card-body ">
+                            <h4 class="card-title">{{project['project_name'] | truncate(15,killwords=True,leeway=0) }}</h4>
+                            <p class="card-text"><h5>Catagory</h5>{{project['project_category'] | truncate(10)  }}</p>
+                            <p class="card-text"><h5>Tech Stack</h5>{{project['project_techstack'] | truncate(20) }}</p>
+                            <a href="#" class="btn btn-warning">See Project</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="card  mb-3">                            
-                <div class="card-body">
-                    <h4 class="card-title">Project Title</h4>
-                    <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                    <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                    <a href="#" class="btn btn-primary">See Project</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="card  mb-3">                            
-                <div class="card-body">
-                    <h4 class="card-title">Project Title</h4>
-                    <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                    <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                    <a href="#" class="btn btn-primary">See Project</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="card  mb-3">                            
-                <div class="card-body">
-                    <h4 class="card-title">Project Title</h4>
-                    <p class="card-text"><h5>Catagory</h5>AI, ML, IOT, etc</p>
-                    <p class="card-text"><h5>Tech Stack</h5>HTML, CSS, Bootstrap, etc</p>
-                    <a href="#" class="btn btn-primary">See Project</a>
-                </div>
-            </div>
-        </div>
+            {% endif %}
+        {% endfor %}
+        <button class=" mx-auto my-auto btn btn-outline-warning col-md-3 h-10" href="#" ><h5>View more</h5></button>
     </div>
 {% endblock %}
