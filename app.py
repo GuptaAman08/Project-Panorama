@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session, logging
 import mongo
 from wtforms import Form, StringField, TextAreaField, PasswordField, SelectField, validators
-from wtforms_components import read_only
 from passlib.hash import sha256_crypt 
 from functools import wraps
 from bson.objectid import ObjectId
 from flask_pymongo import PyMongo
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def success():
@@ -20,22 +20,6 @@ def landing():
     projects = list(mongo.projectCollection.find())
     numResults = min(len(projects),4)
     return render_template('home.html',projects=projects, numResults=numResults)
-
-
-
-
-@app.route('/faculty', methods=["POST","GET"])
-def faculty():
-    # result = mongo.facultyCollection.insert_one({
-    #     "faculty_id":"2",
-    #     "faculty_name":"Amit Singh",
-    #     "faculty_email":"amit.singh@ves.ac.in"
-    # })
-    result = mongo.facultyCollection.find()
-    for obj in result:
-        print(obj)
-    return render_template('faculty.html')
-    return "New"
 
 class LoginForm(Form):
     email = StringField('Email',[validators.InputRequired(message="Input is mandatory!!!!"),validators.Regexp(regex='^[0-9]{4}[a-z]+.[a-z]+@ves.ac.in$',message="Inappropriate Email ID")])
@@ -131,41 +115,108 @@ class UploadProject(Form):
 def profile():
     return render_template('profile.html')
 
+
+
+@app.route('/faculty', methods=["POST","GET"])
+def faculty():
+    if request.method == 'POST':
+        email = request.form['email']
+        password_to_verify = request.form['password']
+        try:
+            print(email)
+            result = mongo.facultyCollection.find_one({
+                    "faculty_email": email
+                },
+                {
+                    "password": 1,
+                    "faculty_name": 1,
+                    "faculty_email": 1,
+                    "_id": 1
+                }
+            )
+            
+            if sha256_crypt.verify(password_to_verify, result['password']):
+                session['logged_in'] = True
+                session['faculty'] = True
+                session['email'] = result['faculty_email']
+                session['username'] = result['faculty_name']
+                session['id'] = str(result['_id'])
+                flash('Logged In Successfully', 'success')
+                return redirect(url_for('landing'))
+            else:
+                flash('Incorrect username or password', 'danger')
+                return render_template('login.html')
+        except:
+            flash('Couldnt find in DataBase', 'danger')
+            return render_template('login.html')
+    return render_template('login.html')
+
+@app.route('/rateProjects', methods=['POST', 'GET'])
+def rateProjects():
+    project_id = request.args['id']
+    rating = request.form['rateValue']
+    suggestion = request.form['suggestions']
+    try:
+        result = mongo.projectCollection.find_one(
+            {
+                "project_id": project_id
+            },
+            {
+                "_id": 1,
+                "project_rating": 1
+            }
+        )
+        print(type(result['project_rating']))
+        # upload = mongo.projectCollection.updateOne(
+        #     { "project_id" : project_id },
+        #     { '$set': {"project_rating.": { "faculty_id": session["id"], "rating": rating, "comments": suggestion }} }
+        #     { "upsert": True }
+        # )
+        # flash("Rating and Suggestions uploaded successfully","success")
+        return render_template('projects.html',project = project)
+    except:
+        flash("Upload Failed","danger")
+        return render_template('projects.html',project = project)
+
+    
+
 @app.route('/login', methods=["POST","GET"])
 def login():
-    if not session['logged_in']:
-        if request.method == 'POST':
-            email = request.form['email']
-            password_to_verify = request.form['password']
-            
-            try:
-                result = mongo.studentCollection.find_one({
-                        "email": email
-                    },
-                    {
-                        "password": 1,
-                        "name": 1,
-                        "email": 1,
-                        "_id": 1
-                    }
-                )
-                if sha256_crypt.verify(password_to_verify, result['password']):
-                    session['logged_in'] = True
-                    session['email'] = result['email']
-                    session['username'] = result['name']
-                    session['id'] = str(result['_id'])
-                    flash('Logged In Successfully', 'success')
-                    return redirect(url_for('landing'))
-                else:
-                    flash('Incorrect username or password', 'danger')
-                    return render_template('login.html')
-            except:
-                flash('Couldnt find in DataBase', 'danger')
-                return render_template('login.html')
-        return render_template('login.html')
-    else:
+    if 'logged_in' in session and session['logged_in'] == True:
         flash('Already Logged In!!!', 'warning')
-        return redirect(url_for('profile'))   
+        return redirect(url_for('landing'))
+    if request.method == 'POST':
+        email = request.form['email']
+        password_to_verify = request.form['password']
+        print(password_to_verify)
+        try:
+            result = mongo.studentCollection.find_one({
+                    "email": email
+                },
+                {
+                    "password": 1,
+                    "name": 1,
+                    "email": 1,
+                    "_id": 1
+                }
+            )
+            print(result['password'])
+            if sha256_crypt.verify(password_to_verify, result['password']):
+                session['logged_in'] = True
+                session['email'] = result['email']
+                session['username'] = result['name']
+                session['faculty'] = False
+                session['id'] = str(result['_id'])
+                flash('Logged In Successfully', 'success')
+                return redirect(url_for('landing'))
+            else:
+                flash('Incorrect username or password', 'danger')
+                return render_template('login.html')
+        except:
+            flash('Couldnt find in DataBase', 'danger')
+            return render_template('login.html')
+    return render_template('login.html')
+
 
 @app.route('/upload_projects', methods=["POST", "GET"])
 @is_logged_in
@@ -242,4 +293,5 @@ def contact_us():
 
 if __name__ == '__main__':
     app.secret_key = "secret123"
+    # session.clear()
     app.run(host='127.0.0.1', port=8000, debug=True)
