@@ -4,6 +4,7 @@ from wtforms import Form, StringField, TextAreaField, PasswordField, SelectField
 from wtforms_components import read_only
 from passlib.hash import sha256_crypt 
 from functools import wraps
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
@@ -81,7 +82,6 @@ def login():
         password_to_verify = request.form['password']
         
         try:
-            
             result = mongo.studentCollection.find_one({
                     "email": email
                 },
@@ -89,15 +89,16 @@ def login():
                     "password": 1,
                     "name": 1,
                     "email": 1,
-                    "_id": 0
+                    "_id": 1
                 }
             )
             if sha256_crypt.verify(password_to_verify, result['password']):
                 session['logged_in'] = True
                 session['email'] = result['email']
                 session['username'] = result['name']
+                session['id'] = str(result['_id'])
                 flash('Logged In Successfully', 'success')
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('home'))
             else:
                 flash('Incorrect username or password', 'danger')
                 return render_template('login.html')
@@ -116,11 +117,6 @@ def is_logged_in(f):
             flash("Unauthorized, Please login", "warning")
             return redirect(url_for('login'))
     return wrap
-
-@app.route('/dashboard', methods=["POST","GET"])
-@is_logged_in
-def dashboard():
-    return render_template('home.html')
 
 @app.route('/logout', methods=["POST","GET"])
 @is_logged_in
@@ -210,9 +206,19 @@ def uploadProject():
             flash("Upload failed #(Members) can't exceed 4", "warning")
     return render_template('upload.html', form=form)
 
-@app.route('/projects')
-def project():  
-    return render_template('projects.html')
+@app.route('/my-projects')
+@is_logged_in
+def my_project():
+    projects = list(mongo.projectCollection.find( { '$or': [ { "project_leader": session['id'] }, { "project_members": session['id'] } ] }))
+    numResults = min(len(projects),4)
+    return render_template('projects_search.html',projects=projects, numResults=numResults)
+
+@app.route('/project', methods=["GET"])
+def project():
+    project_id = request.args['id']
+    project = mongo.projectCollection.find_one(ObjectId(project_id))
+    print(project['project_rating'][0]['comments'])
+    return render_template('projects.html',project = project)
 
 if __name__ == '__main__':
     app.secret_key = "secret123"
