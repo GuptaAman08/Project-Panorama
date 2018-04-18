@@ -16,7 +16,7 @@
                                 <h4 class="card-title">{{project['project_name'] | truncate(15,killwords=True,leeway=0) }}</h4>
                                 <p class="card-text"><h5>Catagory</h5>{{project['project_category'] | truncate(10)  }}</p>
                                 <p class="card-text"><h5>Tech Stack</h5>{{project['project_techstack'] | truncate(20) }}</p>
-                                <a href="#" class="btn btn-warning">See Project</a>
+                                <a href="project?id={{ project['_id'] | string() }}" class="btn btn-warning">See Project</a>
                             </div>
                         </div>
                     </div>
