@@ -23,9 +23,6 @@ def landing():
 
 
 
-@app.route('/profile', methods=["POST","GET"])
-def profile():
-    return render_template('profile.html')
 
 @app.route('/faculty', methods=["POST","GET"])
 def faculty():
@@ -76,37 +73,6 @@ def register():
             return render_template('register.html', form=form)
     return render_template('register.html', form=form)
 
-@app.route('/login', methods=["POST","GET"])
-def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password_to_verify = request.form['password']
-        
-        try:
-            result = mongo.studentCollection.find_one({
-                    "email": email
-                },
-                {
-                    "password": 1,
-                    "name": 1,
-                    "email": 1,
-                    "_id": 1
-                }
-            )
-            if sha256_crypt.verify(password_to_verify, result['password']):
-                session['logged_in'] = True
-                session['email'] = result['email']
-                session['username'] = result['name']
-                session['id'] = str(result['_id'])
-                flash('Logged In Successfully', 'success')
-                return redirect(url_for('landing'))
-            else:
-                flash('Incorrect username or password', 'danger')
-                return render_template('login.html')
-        except:
-            flash('Couldnt find in DataBase', 'danger')
-            return render_template('login.html')
-    return render_template('login.html')    
 
 #Checked if user is logged in 
 def is_logged_in(f):
@@ -158,6 +124,48 @@ class UploadProject(Form):
     academicYear = SelectField("Academic Year", choices=[(str(year), str(year)) for year in range(2010, 2018)])
     github = StringField('Github Repo',[validators.Regexp(regex='^https://github.com/[a-zA-Z0-9]+/$', message="pattern mismatch!!!")])
     endurance = TextAreaField('Your Experience', [validators.InputRequired(message="Input is mandatory!!!!") ,validators.Length(min=5, max=180)])
+
+
+@app.route('/profile', methods=["POST","GET"])
+@is_logged_in
+def profile():
+    return render_template('profile.html')
+
+@app.route('/login', methods=["POST","GET"])
+def login():
+    if not session['logged_in']:
+        if request.method == 'POST':
+            email = request.form['email']
+            password_to_verify = request.form['password']
+            
+            try:
+                result = mongo.studentCollection.find_one({
+                        "email": email
+                    },
+                    {
+                        "password": 1,
+                        "name": 1,
+                        "email": 1,
+                        "_id": 1
+                    }
+                )
+                if sha256_crypt.verify(password_to_verify, result['password']):
+                    session['logged_in'] = True
+                    session['email'] = result['email']
+                    session['username'] = result['name']
+                    session['id'] = str(result['_id'])
+                    flash('Logged In Successfully', 'success')
+                    return redirect(url_for('landing'))
+                else:
+                    flash('Incorrect username or password', 'danger')
+                    return render_template('login.html')
+            except:
+                flash('Couldnt find in DataBase', 'danger')
+                return render_template('login.html')
+        return render_template('login.html')
+    else:
+        flash('Already Logged In!!!', 'warning')
+        return redirect(url_for('profile'))   
 
 @app.route('/upload_projects', methods=["POST", "GET"])
 @is_logged_in
