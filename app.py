@@ -49,7 +49,7 @@ def register():
                 "contact": contact,
                 "class": div,
                 "year": year
-            })
+        })
             flash('Registered successfully!!', 'success')
             return redirect(url_for('login'))
         except:
@@ -73,6 +73,10 @@ def is_logged_in(f):
 @is_logged_in
 def logout():
     session['logged_in'] = False
+    session.pop('faculty', None)
+    session.pop('email', None)
+    session.pop('username', None)
+    session.pop('id', None)
     flash('You are logged out successfully','success')
     return redirect(url_for('login'))
 
@@ -119,11 +123,13 @@ def profile():
 
 @app.route('/faculty', methods=["POST","GET"])
 def faculty():
+    if 'logged_in' in session and session['logged_in'] == True:
+        flash('Already Logged In!!!', 'warning')
+        return redirect(url_for('landing'))
     if request.method == 'POST':
         email = request.form['email']
         password_to_verify = request.form['password']
         try:
-            print(email)
             result = mongo.facultyCollection.find_one({
                     "faculty_email": email
                 },
@@ -152,33 +158,42 @@ def faculty():
     return render_template('login.html')
 
 @app.route('/rateProjects', methods=['POST', 'GET'])
+@is_logged_in
 def rateProjects():
     project_id = request.args['id']
     rating = request.form['rateValue']
     suggestion = request.form['suggestions']
+    
     try:
-        result = mongo.projectCollection.find_one(
-            {
-                "project_id": project_id
-            },
-            {
-                "_id": 1,
-                "project_rating": 1
-            }
+        result = mongo.projectCollection.find_one(ObjectId(project_id))
+        flag = 0
+        for item in result['project_rating']:
+            if item['faculty_id'] == session['id']:
+                flag=1
+                item['rating'] = str(rating)
+                item['comments'] = str(suggestion)
+        if flag == 0:
+            result['project_rating'].append({"faculty_id": session['id'],
+            "faculty_name": session['username'],
+            "rating": str(rating),
+            "comments": suggestion})
+        
+        print(result['project_rating'])
+        upload = mongo.projectCollection.update(
+            { "_id" : ObjectId(project_id) },
+            { '$set': {"project_rating": result['project_rating']}}
         )
-        print(type(result['project_rating']))
-        # upload = mongo.projectCollection.updateOne(
-        #     { "project_id" : project_id },
-        #     { '$set': {"project_rating.": { "faculty_id": session["id"], "rating": rating, "comments": suggestion }} }
-        #     { "upsert": True }
-        # )
-        # flash("Rating and Suggestions uploaded successfully","success")
+        project = mongo.projectCollection.find_one(ObjectId(project_id))
+        flash("Rating and Suggestions uploaded successfully","success")
         return render_template('projects.html',project = project)
     except:
+        project = mongo.projectCollection.find_one(ObjectId(project_id))
         flash("Upload Failed","danger")
         return render_template('projects.html',project = project)
 
-    
+@app.route('/temp', methods=["POST","GET"])
+def temp():
+    return render_template('temp.html')
 
 @app.route('/login', methods=["POST","GET"])
 def login():
@@ -284,7 +299,6 @@ def my_project():
 def project():
     project_id = request.args['id']
     project = mongo.projectCollection.find_one(ObjectId(project_id))
-    print(project['project_rating'][0]['comments'])
     return render_template('projects.html',project = project)
 
 @app.route('/contact-us')

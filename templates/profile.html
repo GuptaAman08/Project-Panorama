@@ -123,11 +123,13 @@
 
         <!-- Nav pills -->
         <ul class="nav nav-pills nav-justified indent-nav" role="tablist">
+            {% if not session.faculty %}
+                <li class="nav-item">
+                    <a class="nav-link customCss" data-toggle="pill" href="#home">Projects</a>
+                </li>
+            {% endif %}
             <li class="nav-item">
-                <a class="nav-link active customCss" data-toggle="pill" href="#home">Projects</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link customCss" data-toggle="pill" href="#menu1">Personal_Info</a>
+                <a class="nav-link active customCss" data-toggle="pill" href="#menu1">Personal_Info</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link customCss" data-toggle="pill" href="#menu2">Other</a>
@@ -136,13 +138,15 @@
 
         <!-- Tab panes -->
         <div class="tab-content content" style="background-color:#fff;color:black;">
-            <div id="home" class="container tab-pane active">
-                <br>
-                <h3 style="text-align:center;">Projects</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua.</p>
-            </div>
-            <div id="menu1" class="container tab-pane fade">
+            {% if not session.faculty %}
+                <div id="home" class="container tab-pane fade">
+                    <br>
+                    <h3 style="text-align:center;">Projects</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.</p>
+                </div>
+            {% endif %}
+            <div id="menu1" class="container tab-pane active">
                 <br>
                 <h3 style="text-align:center;">Personal_Info</h3>
                 <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
