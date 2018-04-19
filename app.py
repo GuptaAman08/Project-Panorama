@@ -5,6 +5,7 @@ from wtforms_components import read_only
 from passlib.hash import sha256_crypt 
 from functools import wraps
 from bson.objectid import ObjectId
+from flask_pymongo import PyMongo
 
 app = Flask(__name__)
 
@@ -98,7 +99,7 @@ def login():
                 session['username'] = result['name']
                 session['id'] = str(result['_id'])
                 flash('Logged In Successfully', 'success')
-                return redirect(url_for('home'))
+                return redirect(url_for('landing'))
             else:
                 flash('Incorrect username or password', 'danger')
                 return render_template('login.html')
@@ -128,8 +129,15 @@ def logout():
 
 @app.route('/search-results', methods=['POST','GET'])
 def projects_search():
-    projects = list(mongo.projectCollection.find())
-    numResults = min(len(projects),4)
+    search_query = request.args['q']
+    mongo.projectCollection.create_index( [ ("project_name", "text"), ("project_description", "text"), ("project_subject", "text") ] )
+    projects = list(mongo.projectCollection.find(
+        { '$text': { '$search': search_query, '$caseSensitive' : False } },
+        { 'score': { '$meta': "textScore" } }
+    ).sort( [('score', { '$meta': "textScore" })] ))
+    if search_query == "":
+        projects = list(mongo.projectCollection.find())
+    numResults = len(projects)
     return render_template('projects_search.html',projects=projects, numResults=numResults)
 
 class UploadProject(Form):
@@ -219,6 +227,10 @@ def project():
     project = mongo.projectCollection.find_one(ObjectId(project_id))
     print(project['project_rating'][0]['comments'])
     return render_template('projects.html',project = project)
+
+@app.route('/contact-us')
+def contact_us():
+    return render_template('contact-us.html')
 
 if __name__ == '__main__':
     app.secret_key = "secret123"

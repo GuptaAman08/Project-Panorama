@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+{% block head %}
+
+{% endblock %}
+
+{% block content%}
+<div class="w-100 text-light mt-4 ">
+    <h4>Address :</h4>
+    <div > <p >Vivekanand Education Society's Institute of Technology, Collector Colony, Chembur East, Mumbai, Maharashtra, 400 072</p> </div>
+</div>
+
+<div id="googleMap" class="w-100 h-50 "></div>
+
+<div class="row col-md-10 mx-auto mt-4">
+    <div class="card col-md-3 mx-auto" >
+        <img class="card-img-top" src="/static/img/avatar.jpg" alt="Card image">
+        <div class="card-body">
+            <h4 class="card-title">Adheesh Juvekar</h4>
+            <p class="card-text">Student,</p>
+            <p class="card-text">IT,VESIT</p>
+            <p class="card-text">2015adheesh.juvekar@ves.ac.in</p>
+            <p class="card-text">9757322862</p>
+        </div>
+    </div>
+    <div class="card col-md-3 mx-auto" >
+        <img class="card-img-top" src="/static/img/avatar.jpg" alt="Card image">
+        <div class="card-body">
+            <h4 class="card-title">Aman Gupta</h4>
+            <p class="card-text">Student,</p>
+            <p class="card-text">IT,VESIT</p>
+            <p class="card-text">2015aman.a@ves.ac.in</p>
+            <p class="card-text">7045986604</p>
+        </div>
+    </div>
+    <div class="card col-md-3 mx-auto" >
+        <img class="card-img-top" src="/static/img/avatar.jpg" alt="Card image">
+        <div class="card-body">
+            <h4 class="card-title">Abid Inamdar</h4>
+            <p class="card-text">Student,</p>
+            <p class="card-text">IT,VESIT</p>
+            <p class="card-text">2015abid.Inamdar@ves.ac.in</p>
+            <p class="card-text">9920517990</p>
+        </div>
+    </div>
+
+</div>
+    
+
+<script>
+    function myMap() {
+    var mapProp= {
+        center:new google.maps.LatLng(19.045336,72.888873),
+        zoom:17,
+    };
+        var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+        var marker = new google.maps.Marker({position: mapProp.center});
+        marker.setMap(map); 
+    }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key= AIzaSyD80_SK7U6p02S686nFZxattboKszbMIiE &callback=myMap"></script>
+
+{% endblock %}
