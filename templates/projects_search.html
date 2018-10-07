@@ -4,7 +4,31 @@
 {% endblock %}
 
 {% block content%}
-    <div class="container mt-5">
+    <div class="container mt-4">
+        <div class="row mb-4 text-light">
+            Search Filters :
+            <div class="col-md-2">
+                <select id="category" class="form-control " onchange="category()">
+                    <option>Category</option>
+                    <option value="Website">Website</option>
+                    <option value="Data Mining">Data Mining</option>
+                    <option value="AI">AI</option>
+                    <option value="Security">Security</option>
+                    <option value="Networking">Networking</option>
+                    <option value="IOT">IOT</option>
+                    <option value="Application Development">Application Development</option>
+                    <option value="Graphics/Virtual Reality">Graphics/Virtual Reality</option>
+                    <option value="NLP">NLP</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="completion" class="form-control" id="sel1">
+                    <option>Project Completion</option>
+                    <option value="">Partial</option>
+                    <option value="">Complete</option>
+                </select>
+            </div>
+        </div>
         <div class="row">
             {% for project in projects %}
                     <div class="col-sm-6 col-md-6 col-lg-4" >
@@ -22,6 +46,13 @@
                 <h4 class="text-light pt-5">No Results found!</h4>
             {% endif %}
         </div> 
-    </div>   
-
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+			  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+			  crossorigin="anonymous"></script>
+    <script type=text/javascript>
+        function category(){
+            var sel = $('#category').val();
+        }
+    </script>
 {% endblock %}

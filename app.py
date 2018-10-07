@@ -5,6 +5,7 @@ from passlib.hash import sha256_crypt
 from functools import wraps
 from bson.objectid import ObjectId
 from flask_pymongo import PyMongo
+from datetime import date
 
 app = Flask(__name__)
 
@@ -28,7 +29,7 @@ class LoginForm(Form):
     confirm = PasswordField('Confirm Password',[validators.InputRequired(message="Input is mandatory!!!!")])
     contact = StringField('Contact',[validators.InputRequired(message="Input is mandatory!!!!"),validators.Regexp(regex='^[0-9]{10}$',message="Contact number invalid")])
     division = StringField('Division',[validators.InputRequired(message="Input is mandatory!!!!"),validators.Length(min=3,max=5)])
-    year = SelectField("Year of joining", choices=[(year, year) for year in range(2010, 2018)])
+    year = SelectField("Year of joining", choices=[(year, year) for year in range(2010, date.today().year + 1)])
 
 @app.route('/register',methods=['POST','GET'])
 def register():
